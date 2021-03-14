@@ -21,3 +21,12 @@ services:
     volumes:
       - ./migrations/cassandra_schema.cql:/schema.cql
     command: /bin/bash -c "sleep 60 && echo loading cassandra keyspace && cqlsh cassandra -f /schema.cql"
+
+  chat-api:
+    restart: always
+    container_name: chat-api
+    build: .
+    env_file:
+      - .env
+    ports:
+    - 3000:3000

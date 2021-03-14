@@ -1,3 +1,19 @@
+# IDE
 .idea/
-out/
 .vscode/
+
+# Cassanda out dir
+out/
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+build/chat
+
+# Test binary, built with `go test -c`
+*.test
+
+.env
