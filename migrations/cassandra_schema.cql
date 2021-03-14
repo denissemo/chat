@@ -1,8 +1,8 @@
-DROP KEYSPACE chat;
-
 CREATE KEYSPACE chat
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}
     AND durable_writes = true;
+
+USE chat;
 
 CREATE TABLE users (
     username text,
