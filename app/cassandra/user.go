@@ -1,6 +1,7 @@
 package cassandra
 
 import (
+	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -44,6 +45,19 @@ func (user *User) Validate() (err app.ErrorMessage, ok bool) {
 	return app.ErrorMessage{}, true
 }
 
+func UserFindOne(username string) *User {
+	user := User{}
+	q := "SELECT * FROM users WHERE username = ? LIMIT 1"
+	if err := Session.Query(q, username).Consistency(gocql.One).Scan(
+		&user.Username, &user.CreatedAt, &user.FirstName, &user.LastName, &user.LastSeen, &user.Password,
+	); err != nil {
+		log.Print("Find user: ", err)
+		return nil
+	}
+
+	return &user
+}
+
 func (user *User) Create() (ok bool) {
 	user.SetPassword(user.Password)
 
@@ -61,4 +75,10 @@ func (user *User) Create() (ok bool) {
 func (user *User) SetPassword(password string) {
 	passwordHash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	user.Password = string(passwordHash)
+}
+
+func (user *User) ToString() string {
+	return fmt.Sprintf("\nUser(\n\tusername: %s,\n\tname: %s,\n\tlast_seen: %s\n);",
+		user.Username, user.FirstName+" "+user.LastName, user.LastSeen,
+	)
 }

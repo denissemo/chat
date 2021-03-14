@@ -21,6 +21,7 @@ func main() {
 	var router *mux.Router
 	router = mux.NewRouter()
 	router = router.PathPrefix("/v1").Subrouter()
+	router.Use(middleware.JwtAuthentication)
 	router.Use(middleware.RequestLogger)
 
 	routes.AuthRoutes(router)
