@@ -58,13 +58,13 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			return
 		}
 
-		user := cassandra.UserFindOne(tk.Username)
+		user := cassandra.FindOneUser(tk.Username)
 		if user == nil {
 			app.Respond(w, r, app.ErrorMessage{Code: 401, Message: "Unauthorized"})
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "user", user)
+		ctx := context.WithValue(r.Context(), "user", *user)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r)
 	})

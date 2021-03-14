@@ -25,6 +25,7 @@ func main() {
 	router.Use(middleware.RequestLogger)
 
 	routes.AuthRoutes(router)
+	routes.UserRoutes(router)
 
 	router.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
 		_, _ = io.WriteString(writer, "PONG")

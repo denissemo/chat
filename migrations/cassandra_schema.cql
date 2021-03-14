@@ -16,9 +16,8 @@ CREATE TABLE users (
 
 CREATE TABLE contacts (
     username text,
-    contact text,
-    first_name text,
-    last_name text,
+    user_contact text,
+    name text,
     last_seen timestamp,
     PRIMARY KEY (( username), last_seen)
 ) WITH CLUSTERING ORDER BY (last_seen DESC);

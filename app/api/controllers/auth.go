@@ -22,7 +22,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := cassandra.UserFindOne(body.Username)
+	user := cassandra.FindOneUser(body.Username)
 	if user == nil {
 		app.Respond(w, r, app.ErrorMessage{Code: 403, Message: "InvalidUsername"})
 		return

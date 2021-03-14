@@ -45,7 +45,7 @@ func (user *User) Validate() (err app.ErrorMessage, ok bool) {
 	return app.ErrorMessage{}, true
 }
 
-func UserFindOne(username string) *User {
+func FindOneUser(username string) *User {
 	user := User{}
 	q := "SELECT * FROM users WHERE username = ? LIMIT 1"
 	if err := Session.Query(q, username).Consistency(gocql.One).Scan(
