@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"chat/app"
+	"chat/app/api/routes"
 	"chat/app/middleware"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -21,6 +22,8 @@ func main() {
 	router = mux.NewRouter()
 	router = router.PathPrefix("/v1").Subrouter()
 	router.Use(middleware.RequestLogger)
+
+	routes.AuthRoutes(router)
 
 	router.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
 		_, _ = io.WriteString(writer, "PONG")
