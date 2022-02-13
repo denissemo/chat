@@ -9,7 +9,7 @@ services:
     environment:
       - "MAX_HEAP_SIZE=256M"
       - "HEAP_NEWSIZE=128M"
-    restart: always
+    # restart: always  ## on local
     volumes:
       - ./out/cassandra_data:/var/lib/cassandra
 

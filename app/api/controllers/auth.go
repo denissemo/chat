@@ -1,13 +1,12 @@
 package controllers
 
 import (
-	"encoding/json"
-	"net/http"
-
 	"chat/app"
 	"chat/app/cassandra"
 	"chat/app/middleware"
+	"encoding/json"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -49,13 +48,25 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignUp(w http.ResponseWriter, r *http.Request) {
-	user := &cassandra.User{}
+	type signUpBody struct {
+		Username  string `json:"username"`
+		Password  string `json:"password"`
+		FirstName string `json:"firstName"`
+		LastName  string `json:"lastName"`
+	}
 
-	if err := json.NewDecoder(r.Body).Decode(user); err != nil {
+	body := &signUpBody{}
+	if err := json.NewDecoder(r.Body).Decode(body); err != nil {
 		app.Respond(w, r, app.ErrorMessage{Code: 400, Message: "InvalidBody"})
 		return
 	}
 
+	user := &cassandra.User{
+		Username:  body.Username,
+		Password:  body.Password,
+		FirstName: body.FirstName,
+		LastName:  body.LastName,
+	}
 	if err, ok := user.Validate(); !ok {
 		app.Respond(w, r, err)
 		return
